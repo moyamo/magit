@@ -82,12 +82,12 @@ all."
     magit-insert-unstaged-changes
     magit-insert-staged-changes
     magit-insert-stashes
-    magit-insert-unpulled-from-upstream
+    magit-insert-unpulled-from-upstream-or-recent
     magit-insert-unpulled-from-pushremote
     magit-insert-unpushed-to-upstream
     magit-insert-unpushed-to-pushremote)
   "Hook run to insert sections into a status buffer."
-  :package-version '(magit . "2.4.0")
+  :package-version '(magit . "2.11.1")
   :group 'magit-status
   :type 'hook)
 
