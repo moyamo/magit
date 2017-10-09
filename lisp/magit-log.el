@@ -1545,6 +1545,25 @@ Show the last `magit-log-section-commit-count' commits."
                         (cons (format "-%d" magit-log-section-commit-count)
                               magit-log-section-arguments)))))
 
+(defun magit-insert-unpushed-to-upstream-or-recent ()
+  "Insert section showing unpushed or recent commits.
+If an upstream is configured for the current branch and it is
+behind of the current branch, then show the commits that have
+not yet been pushed into the upstream branch.  If no upstream is
+configured or if the upstream is not behind of the current branch,
+then show the last `magit-log-section-commit-count' commits."
+  (let ((upstream (magit-rev-parse "@{upstream}")))
+    (if (or (not upstream)
+            (equal upstream (magit-rev-parse "HEAD")))
+        (magit-insert-recent-commits
+         (--if-let (and magit-insert-section--oldroot
+                        (magit-get-section
+                         '((unpushed . "@{upstream}..") (status))
+                         magit-insert-section--oldroot))
+             (magit-section-hidden it)
+           t))
+      (magit-insert-unpushed-to-upstream))))
+
 (defun magit-insert-unpulled-from-upstream-or-recent ()
   "Insert section showing unpulled or recent commits.
 If an upstream is configured for the current branch and it is
