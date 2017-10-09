@@ -1555,7 +1555,13 @@ then show the last `magit-log-section-commit-count' commits."
   (let ((upstream (magit-rev-parse "@{upstream}")))
     (if (or (not upstream)
             (equal upstream (magit-rev-parse "HEAD")))
-        (magit-insert-recent-commits t)
+        (magit-insert-recent-commits
+         (--if-let (and magit-insert-section--oldroot
+                        (magit-get-section
+                         '((unpulled . "..@{upstream}") (status))
+                         magit-insert-section--oldroot))
+             (magit-section-hidden it)
+           t))
       (magit-insert-unpulled-from-upstream))))
 
 ;;;; Auxiliary Log Sections
